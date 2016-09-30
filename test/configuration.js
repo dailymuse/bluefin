@@ -1,8 +1,7 @@
-
 import path from 'path'
 
 import Configuration from '../lib/configuration'
-import {Migration, User} from '../lib/entities'
+import { Database, Endpoint } from '../lib/entities'
 import fix1 from './fixtures/one.js'
 
 const base = '/test'
@@ -10,51 +9,48 @@ const base = '/test'
 function vpath (relative) {
   return path.resolve(base, relative)
 }
-function mount (fix) {
-  Configuration.fs = fix(base)
-}
 
 describe('configuration', () => {
+  let conf
+
+  before(() => {
+    return Configuration.read(vpath('conf.json'), fix1(base)).then(_conf => {
+      conf = _conf
+    })
+  })
+
   it('constructor', function () {
-    mount(fix1)
-    const conf = new Configuration(vpath('conf.json'))
     conf.directory.must.equal(base)
-    conf.loc.must.have.property('migrations', `${base}/migrations`)
-    conf.loc.must.have.property('grants', `${base}/grants`)
+    conf.raw.must.be.an(Object)
   })
 
-  it('migrations', function () {
-    mount(fix1)
-    const conf = new Configuration(vpath('conf.json'))
-    return conf.migrations().then(migrations => {
-      migrations.must.be.an.array()
-      migrations.length.must.equal(2)
-
-      const first = migrations[0]
-      first.must.be.a(Migration)
-      first.ordinal.must.equal(1)
-      first.name.must.equal('create-team')
-
-      const second = migrations[1]
-      second.must.be.a(Migration)
-      second.ordinal.must.equal(2)
-      second.name.must.equal('create-game')
-    })
+  it('supplies passwords', function () {
+    return conf.password('root').must.eventually.equal('abc')
   })
 
-  it('grants', function () {
-    mount(fix1)
-    const conf = new Configuration(vpath('conf.json'))
-    return conf.grants().then(grants => {
-      grants.must.be.an.array()
-      grants.length.must.equal(2)
-
-      const first = grants[0]
-      first.name.must.equal('reader')
-
-      const second = grants[1]
-      second.name.must.equal('writer')
-    })
+  it('supplies endpoints', function () {
+    const ep = conf.endpoint('production')
+    ep.must.be.an(Endpoint)
+    ep.must.have.property('name', 'production')
   })
 
+  it('throws an error for unknown endpoints', function () {
+    (() => conf.endpoint('nork')).must.throw(Error, 'unknown endpoint')
+  })
+
+  it('supplies databases via nickname', function () {
+    const db = conf.database('prod')
+    db.must.be.a(Database)
+    db.name.must.equal('appdata')
+  })
+
+  it('supplies databases with implicit name', function () {
+    const db = conf.database('unit')
+    db.must.be.a(Database)
+    db.name.must.equal('unit')
+  })
+
+  it('thrown an error for unknown databases', function () {
+    (() => conf.database('nork')).must.throw(Error, 'unknown database')
+  })
 })
