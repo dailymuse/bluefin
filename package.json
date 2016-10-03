@@ -9,15 +9,16 @@
   "author": "",
   "license": "UNLICENSED",
   "devDependencies": {
-    "memfs": "0.0.9",
-    "mocha": "^3.0.2",
-    "must": "^0.13.2"
+    "memfs": "~0.0.9",
+    "mocha": "~3.0.2",
+    "must": "~0.13.2"
   },
   "dependencies": {
-    "bluebird": "^3.4.6",
-    "commander": "^2.9.0",
-    "deep-merge": "^1.0.0",
+    "bluebird": "~3.4.6",
+    "commander": "~2.9.0",
+    "deep-merge": "~1.0.0",
     "hi-common": "git+ssh://git@github.com/betterco/hi-common.git#develop",
-    "reify": "^0.3.8"
+    "pg": "~6.1.0",
+    "reify": "~0.3.8"
   }
 }

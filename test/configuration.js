@@ -1,7 +1,8 @@
 import path from 'path'
 
 import Configuration from '../lib/configuration'
-import { Database, Endpoint } from '../lib/entities'
+import Database from '../lib/database'
+import Endpoint from '../lib/endpoint'
 import fix1 from './fixtures/one.js'
 
 const base = '/test'
@@ -12,16 +13,20 @@ function vpath (relative) {
 
 describe('configuration', () => {
   let conf
+  let vfs
 
   before(() => {
-    return Configuration.read(vpath('conf.json'), fix1(base)).then(_conf => {
+    vfs = fix1(base)
+    return Configuration.read(vpath('conf.json'), vfs).then(_conf => {
       conf = _conf
     })
   })
 
-  it('constructor', function () {
+  it('constructs a configuration', function () {
     conf.directory.must.equal(base)
+    conf.file.must.equal('conf.json')
     conf.raw.must.be.an(Object)
+    conf.fs.must.be(vfs)
   })
 
   it('supplies passwords', function () {

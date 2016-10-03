@@ -53,7 +53,8 @@ const conf = {
     },
     staging: {
       port: 15432
-    }
+    },
+    test: {}
   },
   passwords: 'secret/conf.json'
 }
