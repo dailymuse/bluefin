@@ -20,5 +20,15 @@
     "hi-common": "git+ssh://git@github.com/betterco/hi-common.git#develop",
     "pg": "~6.1.0",
     "reify": "~0.3.8"
+  },
+  "standard": {
+    "globals": [
+      "after",
+      "afterEach",
+      "before",
+      "beforeEach",
+      "describe",
+      "it"
+    ]
   }
 }

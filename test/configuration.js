@@ -3,27 +3,19 @@ import path from 'path'
 import Configuration from '../lib/configuration'
 import Database from '../lib/database'
 import Endpoint from '../lib/endpoint'
-import fix1 from './fixtures/one.js'
-
-const base = '/test'
-
-function vpath (relative) {
-  return path.resolve(base, relative)
-}
+import vfs from './fixtures/one.js'
 
 describe('configuration', () => {
   let conf
-  let vfs
 
   before(() => {
-    vfs = fix1(base)
-    return Configuration.read(vpath('conf.json'), vfs).then(_conf => {
+    return Configuration.read('/test/conf.json', vfs).then(_conf => {
       conf = _conf
     })
   })
 
   it('constructs a configuration', function () {
-    conf.directory.must.equal(base)
+    conf.directory.must.equal('/test')
     conf.file.must.equal('conf.json')
     conf.raw.must.be.an(Object)
     conf.fs.must.be(vfs)
@@ -40,7 +32,7 @@ describe('configuration', () => {
   })
 
   it('throws an error for unknown endpoints', function () {
-    (() => conf.endpoint('nork')).must.throw(Error, 'unknown endpoint')
+    (() => conf.endpoint('nork')).must.throw(Error, 'unknown endpoint nork')
   })
 
   it('supplies databases via nickname', function () {
@@ -56,6 +48,6 @@ describe('configuration', () => {
   })
 
   it('thrown an error for unknown databases', function () {
-    (() => conf.database('nork')).must.throw(Error, 'unknown database')
+    (() => conf.database('nork')).must.throw(Error, 'unknown database nork')
   })
 })

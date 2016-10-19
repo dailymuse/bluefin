@@ -1,14 +1,5 @@
 import memfs from 'memfs'
 
-export default function mount (base) {
-  const vol = new memfs.Volume()
-  vol.mountSync(base, tree)
-  vol.mkdirSync(`${base}/migrations`)
-  vol.mkdirSync(`${base}/migrations/season`)
-  vol.mkdirSync(`${base}/grants`)
-  return vol
-}
-
 const conf = {
   databases: {
     prod: {
@@ -47,13 +38,8 @@ const conf = {
     }
   },
   endpoints: {
-    production: {
-      host: 'db.example.com',
-      user: 'root'
-    },
-    staging: {
-      port: 15432
-    },
+    production: {},
+    staging: {},
     test: {}
   },
   passwords: 'secret/conf.json'
@@ -106,3 +92,11 @@ const tree = {
     GRANT SELECT, INSERT, UPDATE, DELETE
       ON ALL TABLES IN SCHEMA $schema TO $user;`
 }
+
+const vfs = new memfs.Volume()
+vfs.mountSync('/test', tree)
+vfs.mkdirSync('/test/migrations')
+vfs.mkdirSync('/test/migrations/season')
+vfs.mkdirSync('/test/grants')
+
+export default vfs
