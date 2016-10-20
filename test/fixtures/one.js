@@ -1,31 +1,38 @@
 import memfs from 'memfs'
 
 const conf = {
+  clusters: {
+    production: {},
+    staging: {},
+    test: {}
+  },
   databases: {
     prod: {
       name: 'appdata',
-      endpoint: 'production',
+      cluster: 'production',
       safety: true,
       schema: {
-        baseball: 'season',
+        baseball: 'migrations/season',
         hoops: {
           name: 'basketball',
-          migrations: 'season'
+          migrations: 'migrations/season',
+          grants: {
+            app1: 'grants/reader.sql',
+            app2: ['grants/reader.sql', 'grants/writer.sql']
+          }
         }
       },
-      users: {
-        app1: {
-          baseball: ['grants/reader.sql', 'grants/search.sql']
-        },
-        app2: ['grants/writer.sql'],
-        app3: 'reader.sql'
+      grants: {
+        app1: 'usage.sql'
       }
     },
     integration: {
-      endpoint: 'staging',
+      cluster: 'staging',
       safety: false,
-      baseball: 'season',
-      users: {
+      schema: {
+        baseball: 'season'
+      },
+      grants: {
         app1: ['grants/reader.sql', 'settings/baseball.sql'],
         app2: ['grants/writer.sql'],
         app3: ['grants/reader.sql', 'settings/basketball.sql'],
@@ -33,16 +40,21 @@ const conf = {
       }
     },
     unit: {
-      endpoint: 'staging',
-      tests: 'grants/fixtures.sql'
+      cluster: 'staging',
+      grants: {
+        tests: 'grants/fixtures.sql'
+      }
     }
   },
-  endpoints: {
-    production: {},
-    staging: {},
-    test: {}
-  },
-  passwords: 'secret/conf.json'
+  passwords: 'secret/conf.json',
+  users: {
+    app1: {
+      name: 'application-one',
+      create: 'templates/user.sql'
+    },
+    app2: 'templates/user.sql',
+    app3: null
+  }
 }
 
 const passwords = {

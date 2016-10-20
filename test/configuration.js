@@ -2,7 +2,7 @@ import path from 'path'
 
 import Configuration from '../lib/configuration'
 import Database from '../lib/database'
-import Endpoint from '../lib/endpoint'
+import Cluster from '../lib/cluster'
 import vfs from './fixtures/one.js'
 
 describe('configuration', () => {
@@ -25,14 +25,14 @@ describe('configuration', () => {
     return conf.password('root').must.eventually.equal('abc')
   })
 
-  it('supplies endpoints', function () {
-    const ep = conf.endpoint('production')
-    ep.must.be.an(Endpoint)
+  it('supplies clusters', function () {
+    const ep = conf.cluster('production')
+    ep.must.be.an(Cluster)
     ep.must.have.property('name', 'production')
   })
 
-  it('throws an error for unknown endpoints', function () {
-    (() => conf.endpoint('nork')).must.throw(Error, 'unknown endpoint nork')
+  it('throws an error for unknown clusters', function () {
+    (() => conf.cluster('nork')).must.throw(Error, 'unknown cluster nork')
   })
 
   it('supplies databases via nickname', function () {
