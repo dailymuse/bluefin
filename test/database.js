@@ -13,7 +13,7 @@ describe('database', () => {
         .then(conf => {
           db = conf.database('integration')
           db.conf.raw.databases.integration.cluster = 'test'
-          return Client.connect(db.conf.cluster('test').loc)
+          return Client.connect(db.conf.cluster('test').dsn)
         })
         .then(client => { c = client })
     })
@@ -69,7 +69,7 @@ describe('database', () => {
         .then(conf => {
           db = conf.database('prod')
           db.conf.raw.databases.prod.cluster = 'test'
-          return Client.connect(db.conf.cluster('test').loc)
+          return Client.connect(db.conf.cluster('test').dsn)
         })
         .then(client => { c = client })
     })
