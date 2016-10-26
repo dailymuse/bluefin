@@ -23,6 +23,10 @@ describe('user', () => {
     return Client.connect().then(_client => { client = _client })
   })
 
+  after(() => {
+    if (client) client.disconnect()
+  })
+
   describe('does not exist', () => {
     beforeEach(() => {
       return client.exec(`DROP USER IF EXISTS ${name}`)
