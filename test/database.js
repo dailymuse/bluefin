@@ -1,6 +1,7 @@
 
 import Client from '../lib/client'
 import Configuration from '../lib/configuration'
+import Schema from '../lib/schema'
 import vfs from './fixtures/one.js'
 
 describe('database', () => {
@@ -24,6 +25,11 @@ describe('database', () => {
 
     after(() => {
       if (c) c.disconnect()
+    })
+
+    it('creates schema', function () {
+      const baseball = db.schema.baseball
+      baseball.must.be.a(Schema)
     })
 
     it('ensure creates when absent', function () {

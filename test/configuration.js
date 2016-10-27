@@ -1,4 +1,3 @@
-import path from 'path'
 
 import Configuration from '../lib/configuration'
 import Database from '../lib/database'
@@ -27,7 +26,7 @@ describe('configuration', () => {
 
   it('supplies clusters', function () {
     const ep = conf.cluster('production')
-    ep.must.be.an(Cluster)
+    ep.must.be.a(Cluster)
     ep.must.have.property('name', 'production')
   })
 
