@@ -18,7 +18,7 @@ describe('schema', () => {
         hoops = db.schema.hoops
         return db.ensure()
       })
-      .then(() => Client.connect({}))
+      .then(() => Client.connect({database: db.name}))
       .then(client => { c = client })
   })
 
@@ -62,6 +62,16 @@ describe('schema', () => {
       return hoops.ensure(c)
         .then(() => hoops.exists(c))
         .must.eventually.be.true()
+    })
+
+    it('build applies migrations', function () {
+      return hoops.build(c)
+        .then(() => hoops.getTableNames(c))
+        .then(names => {
+          console.log('names', names)
+          names.must.include('team')
+          names.must.include('game')
+        })
     })
   })
 
