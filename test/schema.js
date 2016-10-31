@@ -68,7 +68,6 @@ describe('schema', () => {
       return hoops.build(c)
         .then(() => hoops.getTableNames(c))
         .then(names => {
-          console.log('names', names)
           names.must.include('team')
           names.must.include('game')
         })
