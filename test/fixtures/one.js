@@ -30,7 +30,7 @@ const conf = {
       cluster: 'staging',
       safety: false,
       schema: {
-        baseball: 'season'
+        baseball: 'migrations/season'
       },
       grants: {
         app1: ['grants/reader.sql', 'settings/baseball.sql'],
@@ -72,7 +72,7 @@ const tree = {
     CREATE TABLE team (
       id serial PRIMARY KEY,
       name text NOT NULL,
-      city text NOT NULL,
+      city text NOT NULL
     )`,
   'migrations/season/002-create-game.sql': `
     CREATE TABLE game (
@@ -81,9 +81,9 @@ const tree = {
       away_team integer NOT NULL REFERENCES team(id),
       home_score smallint,
       away_score smallint,
-      started timestamp with timezone,
-      CHECK positive_home_score (home_score >= 0),
-      CHECK positive_away_score (away_score >= 0)
+      started timestamp with time zone,
+      CONSTRAINT positive_home_score CHECK (home_score >= 0),
+      CONSTRAINT positive_away_score CHECK (away_score >= 0)
     )`,
   'grants/reader.sql': `
     ALTER ROLE $user SET search_path = $schema

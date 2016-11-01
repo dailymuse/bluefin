@@ -39,7 +39,7 @@ describe('schema', () => {
 
   describe('does not exist', () => {
     beforeEach(() => {
-      return c.exec(dropSql)
+      return hoops.drop(c)
     })
 
     it('exists is false', function () {
@@ -103,6 +103,24 @@ describe('schema', () => {
         })
     })
   })
+
+  describe('bluefin', function () {
+    let bluefin
+
+    beforeEach(() => {
+      bluefin = Schema.bluefin()
+      return bluefin.drop(c)
+    })
+
+    it('is a schema', function () {
+      bluefin.must.be.a(Schema)
+    })
+
+    it('creates the migrations table', function () {
+      return bluefin.build(c).then(() => {
+        return bluefin.getTableNames(c).must.eventually.include('migrations')
+      })
+    })
+  })
 })
 
-const dropSql = `DROP SCHEMA IF EXISTS ${name} CASCADE`

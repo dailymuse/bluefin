@@ -2,70 +2,88 @@
 import Client from '../lib/client'
 import Configuration from '../lib/configuration'
 import Schema from '../lib/schema'
-import vfs from './fixtures/one.js'
+import vfs from './fixtures/simple.js'
 
 describe('database', () => {
   let db
-  let c
+  let pg
 
   describe('safety off', () => {
     before(() => {
       return Configuration.read('/test/conf.json', vfs)
         .then(conf => {
-          db = conf.database('integration')
-          db.conf.raw.databases.integration.cluster = 'test'
-          return Client.connect(db.conf.cluster('test').dsn)
-        })
-        .then(client => { c = client })
+          db = conf.database('bft')
+          return conf.cluster('local').connect()
+        }).then(client => { pg = client })
     })
 
     beforeEach(() => {
       Client.clear()
     })
 
+    // we disconnect after each test, because the connection prevents
+    // the database from being dropped, which we have to do in forEach()
+    afterEach(() => {
+      if (db) db.disconnect()
+    })
+
     after(() => {
-      if (c) c.disconnect()
+      if (pg) pg.disconnect()
     })
 
     it('creates schema', function () {
-      const baseball = db.schema.baseball
-      baseball.must.be.a(Schema)
+      db.schema.hoops.must.be.a(Schema)
     })
 
-    it('ensure creates when absent', function () {
-      return c.query(`DROP DATABASE IF EXISTS ${db.name}`)
-        .then(() => db.ensure())
-        .then(() => c.value('SELECT 1 FROM pg_database WHERE datname=$1', db.name))
-        .then(value => value.must.equal(1))
+    describe('database does not exist', () => {
+      beforeEach(() => pg.exec(`DROP DATABASE IF EXISTS ${db.name}`))
+
+      it('build creates and builds schema', function () {
+        return db.build().then(() => Promise.all([
+          db.exists().must.eventually.be.true(),
+          db.connect().then(c => {
+            return db.schema.hoops.getTableNames(c).must.eventually.include('team')
+          })
+        ]))
+      })
+
+      it('drop does nothing', function () {
+        Client.clear()
+        return db.drop()
+          .then(() => {
+            Client.history.some(
+              ea => ea.result.command === 'DROP'
+            ).must.be.false()
+          })
+      })
+
+      it('ensure creates', function () {
+        return db.ensure().then(() => Promise.all([
+          db.exists().must.eventually.be.true(),
+          db.connect().then(c => {
+            return db.schema.hoops.exists(c).must.eventually.be.false()
+          })
+        ]))
+      })
     })
 
-    it('ensure does nothing when present', function () {
-      return db.ensure()
-        .then(() => {
-          Client.clear()
-          return db.ensure()
-        })
-        .then(() => {
-          Client.history.some(ea => ea.result.command === 'CREATE').must.be.false()
-        })
-    })
+    describe('database exists', () => {
+      beforeEach(() => db.ensure())
 
-    it('drop destroys database when present', function () {
-      return db.ensure()
-        .then(() => db.drop())
-        .then(() => db.exists())
-        .then(exists => exists.must.be.false())
-    })
+      it('drop destroys database', function () {
+        return db.drop()
+          .then(() => db.exists().must.eventually.be.false())
+      })
 
-    it('drop does nothing when database not present', function () {
-      return db.drop()
-        .then(() => {
-          Client.clear()
-          return db.drop()
-        })
-        .then(() => {
-          Client.history.some(ea => ea.result.command === 'DROP').must.be.false()
-        })
+      it('ensure does nothing', function () {
+        Client.clear()
+        return db.ensure()
+          .then(() => {
+            Client.history.some(
+              ea => ea.result.command === 'CREATE'
+            ).must.be.false()
+          })
+      })
     })
   })
 
@@ -73,11 +91,9 @@ describe('database', () => {
     before(() => {
       return Configuration.read('/test/conf.json', vfs)
         .then(conf => {
-          db = conf.database('prod')
-          db.conf.raw.databases.prod.cluster = 'test'
-          return Client.connect(db.conf.cluster('test').dsn)
+          db = conf.database('bft')
+          db.raw.safety = true
         })
-        .then(client => { c = client })
     })
 
     it('drop throws error when safety is on', function () {
