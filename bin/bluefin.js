@@ -13,19 +13,28 @@ function readConf (fpath) {
   return Configuration.read(fpath, fs)
 }
 
-function rebuild (dbName, schemaName, options) {
-  readConf(options.parent.conf)
+function rebuild (dbName, schemaName, cmd) {
+  const options = {last: cmd.parent.migration}
+  readConf(cmd.parent.conf)
     .then(conf => conf.database(dbName))
     .then(db => {
       const vow = schemaName
-        ? db.rebuildSchema(schemaName)
-        : db.rebuild()
+        ? db.rebuildSchema(schemaName, options)
+        : db.rebuild(options)
       return vow.then(() => db.disconnect())
     })
 }
 
-function apply (db, schema, options) {
-  console.log('apply')
+function apply (dbName, schemaName, cmd) {
+  const options = {last: cmd.parent.migration}
+  readConf(cmd.parent.conf)
+    .then(conf => conf.database(dbName))
+    .then(db => {
+      const vow = schemaName
+        ? db.applySchema(schemaName, options)
+        : db.apply(options)
+      return vow.then(() => db.disconnect())
+    })
 }
 
 program

@@ -46,10 +46,21 @@ describe('database', () => {
               names.must.eql(['basketball', 'bluefin', 'public'])
               return db.schema.hoops.getTableNames(c)
             }).then(names => {
-              names.must.include('team')
+              names.must.include('game')
             })
           })
         ]))
+      })
+
+      it('applies successfully', function () {
+        return db.build({last: 1})
+          .then(() => db.apply({first: 2}))
+          .then(() => db.connect())
+          .then(c => {
+            return db.schema.hoops.getTableNames(c)
+          }).then(names => {
+            names.must.include('game')
+          })
       })
 
       it('rebuilds successfully', function () {
@@ -61,7 +72,7 @@ describe('database', () => {
                 names.must.eql(['basketball', 'bluefin', 'public'])
                 return db.schema.hoops.getTableNames(c)
               }).then(names => {
-                names.must.include('team')
+                names.must.include('game')
               })
             })
           })

@@ -72,6 +72,33 @@ describe('schema', () => {
           names.must.include('game')
         })
     })
+
+    it('build honors last option', function () {
+      return hoops.build(c, {last: 1})
+        .then(() => hoops.getTableNames(c))
+        .then(names => {
+          names.must.include('team')
+          names.must.not.include('game')
+        })
+    })
+
+    it('apply honors first option', function () {
+      return hoops.build(c, {last: 1})
+        .then(() => hoops.apply(c, {first: 2}))
+        .then(() => hoops.getTableNames(c))
+        .then(names => {
+          names.must.include('game')
+        })
+    })
+
+    it('apply honors last option', function () {
+      return hoops.build(c, {last: 1})
+        .then(() => hoops.apply(c, {first: 2, last: 1}))
+        .then(() => hoops.getTableNames(c))
+        .then(names => {
+          names.must.not.include('game')
+        })
+    })
   })
 
   describe('does exist', () => {
