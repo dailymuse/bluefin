@@ -1,0 +1,22 @@
+# example configuration file
+
+passwords = "secret/passwords.toml"
+# store passwords in a separate file, so they can be easily encrypted
+
+[clusters.dev.dsn]
+host = "localhost"
+port = 5432
+
+[databases.bfe]
+cluster = "dev"
+name = "bluefin_example"
+
+  [databases.bfe.schema.baseball]
+  migrations = "migrations"
+
+    [databases.bfe.schema.baseball.grants]
+    color = "settings/read.sql"
+    pbp = ["settings/read.sql", "settings/write.sql"]
+
+[users.pbp]
+name = "play_by_play"
