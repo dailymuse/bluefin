@@ -130,4 +130,13 @@ describe('read-migrations', () => {
       })
   })
 
+  it('rejects missing migration before first', function () {
+    return Sequence.readMigrations(vfs, '/test/eta', 3)
+      .must.reject.an(Error)
+  })
+
+  it('rejects missing migration after last', function () {
+    return Sequence.readMigrations(vfs, '/test/eta', undefined, 1)
+      .must.reject.an(Error)
+  })
 })
