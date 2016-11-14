@@ -83,4 +83,51 @@ describe('read-migrations', () => {
         s.programs[3].path.must.equal('/test/beta/003-three.sql')
       })
   })
+
+  it('honors first parameter', function () {
+    return Sequence.readMigrations(vfs, '/test/alpha', 2)
+      .then(s => {
+        s.programs.length.must.equal(2)
+        s.programs[0].ordinal.must.equal(2)
+        s.programs[1].ordinal.must.equal(3)
+      })
+  })
+
+  it('honors last parameter', function () {
+    return Sequence.readMigrations(vfs, '/test/alpha', undefined, 2)
+      .then(s => {
+        s.programs.length.must.equal(2)
+        s.programs[0].ordinal.must.equal(1)
+        s.programs[1].ordinal.must.equal(2)
+      })
+  })
+
+  it('honors first and last parameters', function () {
+    return Sequence.readMigrations(vfs, '/test/alpha', 2, 2)
+      .then(s => {
+        s.programs.length.must.equal(1)
+        s.programs[0].ordinal.must.equal(2)
+      })
+  })
+
+  it('honors first with prologue', function () {
+    return Sequence.readMigrations(vfs, '/test/beta', 2)
+      .then(s => {
+        s.programs.length.must.equal(3)
+        s.programs[0].template.must.equal('beta prologue')
+        s.programs[1].ordinal.must.equal(2)
+        s.programs[2].ordinal.must.equal(3)
+      })
+  })
+
+  it('honors last with epilogue', function () {
+    return Sequence.readMigrations(vfs, '/test/delta', undefined, 2)
+      .then(s => {
+        s.programs.length.must.equal(3)
+        s.programs[0].ordinal.must.equal(1)
+        s.programs[1].ordinal.must.equal(2)
+        s.programs[2].template.must.equal('delta epilogue')
+      })
+  })
+
 })
