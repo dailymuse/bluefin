@@ -42,9 +42,29 @@ describe('database', () => {
         return db.build().then(() => Promise.all([
           db.exists().must.eventually.be.true(),
           db.connect().then(c => {
-            return db.schema.hoops.getTableNames(c).must.eventually.include('team')
+            return db.getSchemaNames(c).then(names => {
+              names.must.eql(['basketball', 'bluefin', 'public'])
+              return db.schema.hoops.getTableNames(c)
+            }).then(names => {
+              names.must.include('team')
+            })
           })
         ]))
+      })
+
+      it('rebuilds successfully', function () {
+        return db.build()
+          .then(() => db.rebuild())
+          .then(() => {
+            return db.connect().then(c => {
+              return db.getSchemaNames(c).then(names => {
+                names.must.eql(['basketball', 'bluefin', 'public'])
+                return db.schema.hoops.getTableNames(c)
+              }).then(names => {
+                names.must.include('team')
+              })
+            })
+          })
       })
 
       it('drop does nothing', function () {
