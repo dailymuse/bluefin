@@ -6,27 +6,32 @@ import Promise from 'bluebird'
 import Configuration from '../lib/configuration'
 import Client from '../lib/client'
 
-Client.logToConsole = true
-
 function readConf (fpath) {
   fpath = fpath || process.env.BLUEFIN_CONF || 'conf.json'
   return Configuration.read(fpath, fs)
 }
 
+function readOptions (cmd) {
+  const options = {log: true}
+  if (cmd.parent.migration) options.last = cmd.parent.migration
+  if (cmd.parent.list) options.list = cmd.parent.list
+  return options
+}
+
 function rebuild (dbName, schemaName, cmd) {
-  const options = {last: cmd.parent.migration}
+  const options = readOptions(cmd)
   readConf(cmd.parent.conf)
     .then(conf => conf.database(dbName))
     .then(db => {
       const vow = schemaName
         ? db.rebuildSchema(schemaName, options)
         : db.rebuild(options)
-      return vow.then(() => db.disconnect())
+      return vow.finally(() => db.disconnect())
     })
 }
 
 function apply (dbName, schemaName, cmd) {
-  const options = {last: cmd.parent.migration}
+  const options = readOptions(cmd)
   readConf(cmd.parent.conf)
     .then(conf => conf.database(dbName))
     .then(db => {

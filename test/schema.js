@@ -131,6 +131,21 @@ describe('schema', () => {
     })
   })
 
+  describe('has partial migrations', () => {
+    beforeEach(() => {
+      return db.rebuild({last: 1})
+    })
+
+    it('applies new migrations', function () {
+      return hoops.apply(c)
+        .then(() => hoops.getTableNames(c))
+        .then(names => {
+          names.length.must.equal(2)
+          names.must.include('game')
+        })
+    })
+  })
+
   describe('bluefin', function () {
     let bluefin
 
