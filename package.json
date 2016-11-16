@@ -1,5 +1,5 @@
 {
-  "name": "hi-malta",
+  "name": "bluefin",
   "version": "0.0.1",
   "description": "A postgres schema management tool",
   "main": "index.js",
@@ -16,7 +16,6 @@
   "dependencies": {
     "bluebird": "~3.4.6",
     "commander": "~2.9.0",
-    "deep-merge": "~1.0.0",
     "pg": "~6.1.0",
     "reify": "~0.3.8"
   },
