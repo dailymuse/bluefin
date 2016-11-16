@@ -4,19 +4,30 @@
   "description": "A postgres schema management tool",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_ENV=test mocha --recursive -r must -r reify"
+    "test": "NODE_ENV=test mocha -R list -r must -r reify"
   },
   "author": "",
   "license": "UNLICENSED",
   "devDependencies": {
-    "memfs": "0.0.9",
-    "mocha": "^3.0.2",
-    "must": "^0.13.2"
+    "memfs": "~0.0.9",
+    "mocha": "~3.0.2",
+    "must": "~0.13.2"
   },
   "dependencies": {
-    "bluebird": "^3.4.6",
-    "commander": "^2.9.0",
-    "hi-common": "git+ssh://git@github.com/betterco/hi-common.git#develop",
-    "reify": "^0.3.8"
+    "bluebird": "~3.4.6",
+    "commander": "~2.9.0",
+    "deep-merge": "~1.0.0",
+    "pg": "~6.1.0",
+    "reify": "~0.3.8"
+  },
+  "standard": {
+    "globals": [
+      "after",
+      "afterEach",
+      "before",
+      "beforeEach",
+      "describe",
+      "it"
+    ]
   }
 }
