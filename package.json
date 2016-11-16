@@ -17,7 +17,6 @@
     "bluebird": "~3.4.6",
     "commander": "~2.9.0",
     "deep-merge": "~1.0.0",
-    "hi-common": "git+ssh://git@github.com/betterco/hi-common.git#develop",
     "pg": "~6.1.0",
     "reify": "~0.3.8"
   },
