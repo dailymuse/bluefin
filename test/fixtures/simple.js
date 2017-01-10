@@ -27,15 +27,7 @@ const conf = {
       }
     }
   },
-  passwords: 'secret/conf.json',
-  users: {
-    app1: {
-      name: 'application-one',
-      create: 'templates/user.sql'
-    },
-    app2: 'templates/user.sql',
-    app3: null
-  }
+  passwords: 'secret/conf.json'
 }
 
 const passwords = {
@@ -71,22 +63,17 @@ const tree = {
     )`,
 
   'grants/reader.sql': template`
-    ALTER ROLE $user SET search_path = $schema
-    ALTER DEFAULT PRIVILEGES IN SCHEMA $schema GRANT USAGE ON SEQUENCES TO $user
-    ALTER DEFAULT PRIVILEGES IN SCHEMA $schema GRANT SELECT TABLES TO $user
+    ALTER ROLE $user SET search_path = $schema;
 
-    GRANT USAGE ON SCHEMA $schema TO $user
-    GRANT USAGE ON ALL SEQUENCES IN SCHEMA $schema TO $user
+    GRANT USAGE ON SCHEMA $schema TO $user;
+    GRANT USAGE ON ALL SEQUENCES IN SCHEMA $schema TO $user;
     GRANT SELECT ON ALL TABLES IN SCHEMA $schema TO $user`,
 
   'grants/writer.sql': template`
-    ALTER ROLE $user SET search_path = $schema
-    ALTER DEFAULT PRIVILEGES IN SCHEMA $schema GRANT USAGE ON SEQUENCES TO $user
-    ALTER DEFAULT PRIVILEGES IN SCHEMA $schema
-      GRANT INSERT, UPDATE, DELETE TABLES TO $user
+    ALTER ROLE $user SET search_path = $schema;
 
-    GRANT USAGE ON SCHEMA $schema TO $user
-    GRANT USAGE ON ALL SEQUENCES IN SCHEMA $schema TO $user
+    GRANT USAGE ON SCHEMA $schema TO $user;
+    GRANT USAGE ON ALL SEQUENCES IN SCHEMA $schema TO $user;
     GRANT INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA $schema TO $user`,
 
   'grants/utc.sql': template`

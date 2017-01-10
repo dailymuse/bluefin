@@ -1,10 +1,8 @@
 
 import fs from 'fs'
 import program from 'commander'
-import Promise from 'bluebird'
 
 import Configuration from '../lib/configuration'
-import Client from '../lib/client'
 
 function readConf (fpath) {
   fpath = fpath || process.env.BLUEFIN_CONF || 'conf.json'

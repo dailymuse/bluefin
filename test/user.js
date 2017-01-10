@@ -1,5 +1,4 @@
 import Client from '../lib/client'
-import Program from '../lib/program'
 import User from '../lib/user'
 
 const name = 'u1avk5hgsr'
@@ -8,18 +7,15 @@ const password = 'secret'
 describe('user', () => {
   let client
   let conf
-  let raw
   let u
 
   const exists = () => client.value(existsSql, name)
 
   before(() => {
-    raw = {name}
     conf = {
-      program: relpath => undefined,
       password: user => Promise.resolve(password)
     }
-    u = new User(conf, 'nickname', raw)
+    u = new User(conf, name)
     return Client.connect().then(_client => { client = _client })
   })
 
@@ -84,47 +80,6 @@ describe('user', () => {
         .must.eventually.be.false()
     })
   })
-
-  describe('template creation', () => {
-    let oldConf
-    let oldRaw
-    let oldUser
-
-    before(() => {
-      oldConf = conf
-      oldRaw = raw
-      oldUser = u
-
-      conf = {
-        password: user => Promise.resolve(password),
-        program: relpath => {
-          relpath.must.equal('test.sql')
-          return new Program(template)
-        }
-      }
-      raw = {name, create: 'test.sql'}
-      u = new User(conf, 'nickname', raw)
-      return Client.connect().then(_client => { client = _client })
-    })
-
-    beforeEach(() => {
-      return client.exec(`DROP USER IF EXISTS ${name}`)
-    })
-
-    after(() => {
-      conf = oldConf
-      raw = oldRaw
-      u = oldUser
-    })
-
-    it('it creates a user with a tempalte', () => {
-      return u.create(client)
-        .then(() => client.value(hasCreateDbSql, name))
-        .must.eventually.be.true()
-    })
-  })
 })
 
-const hasCreateDbSql = 'SELECT rolcreatedb FROM pg_roles WHERE rolname = $1'
 const existsSql = 'SELECT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = $1)'
-const template = 'CREATE USER $user CREATEDB'
