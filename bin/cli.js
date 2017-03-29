@@ -1,8 +1,9 @@
+#!/usr/bin/env node
 
-import fs from 'fs'
-import program from 'commander'
-
-import Configuration from '../lib/configuration'
+require('reify')
+const fs = require('fs')
+const program = require('commander')
+const Configuration = require('../lib/configuration').default
 
 function readConf (fpath) {
   fpath = fpath || process.env.BLUEFIN_CONF || 'conf.json'

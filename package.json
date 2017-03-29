@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "A postgres schema management tool",
   "main": "index.js",
+  "bin": "./bin/cli.js",
   "scripts": {
     "test": "NODE_ENV=test mocha -R list -r must -r reify"
   },
