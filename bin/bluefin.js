@@ -36,7 +36,7 @@ function apply (dbName, schemaName, cmd) {
       const vow = schemaName
         ? db.applySchema(schemaName, options)
         : db.apply(options)
-      return vow.then(() => db.disconnect())
+      return vow.finally(() => db.disconnect())
     })
 }
 
@@ -57,4 +57,3 @@ program
   .action(apply)
 
 program.parse(process.argv)
-

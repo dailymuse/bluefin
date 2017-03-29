@@ -11,7 +11,8 @@
   "devDependencies": {
     "memfs": "~0.0.9",
     "mocha": "~3.2.0",
-    "must": "~0.13.4"
+    "must": "~0.13.4",
+    "standard": "~9.0.2"
   },
   "dependencies": {
     "bluebird": "~3.5.0",

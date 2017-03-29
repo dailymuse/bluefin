@@ -62,4 +62,20 @@ describe('program', () => {
     fn.must.throw(Error, 'Unrecognized variable $arb')
     Client.history.must.be.empty()
   })
+
+  it('ignores query parameters when checking', () => {
+    const p = new Program('SELECT $1 FROM t')
+    const fn = () => p.checkContext({})
+    Client.clear()
+    fn.must.not.throw(Error)
+    Client.history.must.be.empty()
+  })
+
+  it('ignores query parameters when resolving', () => {
+    const p = new Program('SELECT $1 FROM t')
+    const fn = () => p.resolve({})
+    Client.clear()
+    fn.must.not.throw(Error)
+    Client.history.must.be.empty()
+  })
 })
