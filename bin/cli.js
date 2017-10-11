@@ -27,6 +27,7 @@ function rebuild (dbName, schemaName, cmd) {
         : db.rebuild(options)
       return vow.finally(() => db.disconnect())
     })
+    .catch(err => console.log(err.messsage))
 }
 
 function apply (dbName, schemaName, cmd) {
@@ -39,12 +40,17 @@ function apply (dbName, schemaName, cmd) {
         : db.apply(options)
       return vow.finally(() => db.disconnect())
     })
+    .catch(err => console.log(err.messsage))
 }
 
 program
   .version('0.0.1')
   .option('-c --conf <path>', 'Path to configuration file')
-  .option('-m --migration <ordinal>', 'Only consider migrations with this ordinal or lower', parseInt)
+  .option(
+    '-m --migration <ordinal>',
+    'Only consider migrations with this ordinal or lower',
+    parseInt
+  )
   .option('-l --list', 'List migrations only, do not apply them')
 
 program
