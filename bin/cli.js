@@ -27,7 +27,7 @@ function rebuild (dbName, schemaName, cmd) {
         : db.rebuild(options)
       return vow.finally(() => db.disconnect())
     })
-    .catch(err => console.log(err.messsage))
+    .catch(err => console.log(err.messsage || err.stack.split('\n')[0]))
 }
 
 function apply (dbName, schemaName, cmd) {
