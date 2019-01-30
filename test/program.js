@@ -20,14 +20,14 @@ describe('program', () => {
 
   it('resolves parameters', () => {
     const p = new Program('SELECT $arb AS num')
-    const context = {arb: 42}
+    const context = { arb: 42 }
     return p.exec(client, context)
       .then(result => result.rows[0].num.must.equal(42))
   })
 
   it('executes in a transaction', () => {
     const p = new Program('SELECT $arb')
-    const context = {arb: 42}
+    const context = { arb: 42 }
     return p.execInTransaction(client, context)
   })
 
@@ -47,7 +47,7 @@ describe('program', () => {
 
   it('checks a context without executing', () => {
     const p = new Program('SELECT $arb FROM t')
-    const context = {arb: true}
+    const context = { arb: true }
     const fn = () => p.checkContext(context)
     Client.clear()
     fn.must.not.throw(Error)

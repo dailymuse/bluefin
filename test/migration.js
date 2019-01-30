@@ -1,6 +1,5 @@
 
 import Configuration from '../lib/configuration'
-import Client from '../lib/client'
 import Migration from '../lib/migration'
 import vfs from './fixtures/simple.js'
 

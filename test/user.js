@@ -46,7 +46,7 @@ describe('user', () => {
 
     it('simple create allows connection', () => {
       return u.create(client).then(() => {
-        return Client.connect({user: name, database: 'postgres', password})
+        return Client.connect({ user: name, database: 'postgres', password })
       }).then(uc => {
         uc.must.be.a(Client)
         return uc.disconnect()

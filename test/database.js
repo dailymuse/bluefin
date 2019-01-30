@@ -53,8 +53,8 @@ describe('database', () => {
       })
 
       it('applies successfully', function () {
-        return db.build({last: 1})
-          .then(() => db.apply({first: 2}))
+        return db.build({ last: 1 })
+          .then(() => db.apply({ first: 2 }))
           .then(() => db.connect())
           .then(c => {
             return db.schema.hoops.getTableNames(c)
@@ -132,4 +132,3 @@ describe('database', () => {
     })
   })
 })
-

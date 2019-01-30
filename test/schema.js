@@ -18,7 +18,7 @@ describe('schema', () => {
         hoops = db.schema.hoops
         return db.ensure()
       })
-      .then(() => Client.connect({database: db.name}))
+      .then(() => Client.connect({ database: db.name }))
       .then(client => { c = client })
   })
 
@@ -74,7 +74,7 @@ describe('schema', () => {
     })
 
     it('build honors last option', function () {
-      return hoops.build(c, {last: 1})
+      return hoops.build(c, { last: 1 })
         .then(() => hoops.getTableNames(c))
         .then(names => {
           names.must.include('team')
@@ -83,8 +83,8 @@ describe('schema', () => {
     })
 
     it('apply honors first option', function () {
-      return hoops.build(c, {last: 1})
-        .then(() => hoops.apply(c, {first: 2}))
+      return hoops.build(c, { last: 1 })
+        .then(() => hoops.apply(c, { first: 2 }))
         .then(() => hoops.getTableNames(c))
         .then(names => {
           names.must.include('game')
@@ -92,8 +92,8 @@ describe('schema', () => {
     })
 
     it('apply honors last option', function () {
-      return hoops.build(c, {last: 1})
-        .then(() => hoops.apply(c, {first: 2, last: 1}))
+      return hoops.build(c, { last: 1 })
+        .then(() => hoops.apply(c, { first: 2, last: 1 }))
         .then(() => hoops.getTableNames(c))
         .then(names => {
           names.must.not.include('game')
@@ -133,7 +133,7 @@ describe('schema', () => {
 
   describe('has partial migrations', () => {
     beforeEach(() => {
-      return db.rebuild({last: 1})
+      return db.rebuild({ last: 1 })
     })
 
     it('applies new migrations', function () {
@@ -165,4 +165,3 @@ describe('schema', () => {
     })
   })
 })
-

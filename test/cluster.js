@@ -2,7 +2,6 @@
 import Client from '../lib/client'
 import Cluster from '../lib/cluster'
 
-
 describe('cluster', () => {
   let conf
   let raw
@@ -50,7 +49,7 @@ describe('cluster', () => {
 
   describe('dsn with user but no password', () => {
     before(() => {
-      conf = {password: () => Promise.resolve(undefined)}
+      conf = { password: () => Promise.resolve(undefined) }
       raw = {
         dsn: {
           user: process.env.USER
@@ -63,7 +62,7 @@ describe('cluster', () => {
 
   describe('dsn with password', () => {
     before(() => {
-      conf = {password: () => Promise.resolve('secret')}
+      conf = { password: () => Promise.resolve('secret') }
       raw = {
         dsn: {
           user: process.env.USER
@@ -79,7 +78,5 @@ describe('cluster', () => {
         c.disconnect()
       })
     })
-
   })
 })
-

@@ -5,21 +5,21 @@
   "main": "index.js",
   "bin": "./bin/cli.js",
   "scripts": {
-    "test": "NODE_ENV=test mocha -R list -r must -r reify"
+    "test": "NODE_ENV=test mocha -R list -r must -r reify --exit"
   },
   "author": "",
   "license": "MIT",
   "devDependencies": {
     "memfs": "~0.0.9",
-    "mocha": "~3.2.0",
+    "mocha": "~5.2.0",
     "must": "~0.13.4",
-    "standard": "~9.0.2"
+    "standard": "~12.0.1"
   },
   "dependencies": {
-    "bluebird": "~3.5.0",
-    "commander": "~2.9.0",
-    "pg": "~6.1.5",
-    "reify": "~0.6.6"
+    "bluebird": "~3.5.3",
+    "commander": "~2.19.0",
+    "pg": "~7.8.0",
+    "reify": "~0.18.1"
   },
   "standard": {
     "globals": [

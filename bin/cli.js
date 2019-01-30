@@ -11,7 +11,7 @@ function readConf (fpath) {
 }
 
 function readOptions (cmd) {
-  const options = {log: true}
+  const options = { log: true }
   if (cmd.parent.migration) options.last = cmd.parent.migration
   if (cmd.parent.list) options.list = cmd.parent.list
   return options
