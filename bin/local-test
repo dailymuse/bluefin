@@ -11,4 +11,4 @@ export TZ=UTC
 standard &&
 
 # Run tests
-ava
+mocha -R list -r must -r reify --exit

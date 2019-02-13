@@ -8,5 +8,5 @@ export NODE_ENV=test
 export TZ=UTC
 
 # Run tests
-nyc ava && nyc report --reporter=text-lcov > coverage.lcov
+nyc mocha -R list -r must -r reify --exit && nyc report --reporter=text-lcov > coverage.lcov
 ./node_modules/.bin/codecov -t $CODECOV_TOKEN
