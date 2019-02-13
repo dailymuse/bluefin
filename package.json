@@ -1,18 +1,25 @@
 {
-  "name": "bluefin",
+  "name": "@themuse/bluefin",
   "version": "0.2.0",
   "description": "A postgres schema management tool",
   "main": "index.js",
   "bin": "./bin/cli.js",
   "scripts": {
-    "test": "NODE_ENV=test mocha -R list -r must -r reify --exit"
+    "test": "./bin/local-test",
+    "coverage": "./bin/local-coverage",
+    "standard": "standard"
   },
-  "author": "",
+  "author": "Daily Muse, Inc.",
   "license": "MIT",
+  "publishConfig": {
+    "registry": "https://verdaccio.inf.themuse.com"
+  },
   "devDependencies": {
+    "codecov": "~3.1.0",
     "memfs": "~0.0.9",
     "mocha": "~5.2.0",
     "must": "~0.13.4",
+    "nyc": "~13.1.0",
     "standard": "~12.0.1"
   },
   "dependencies": {

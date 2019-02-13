@@ -1,5 +1,15 @@
 node_modules/
+.nyc_output/
+coverage/
+
 npm-debug.log
 .DS_Store
+
+#IDES
 .vscode/
+.idea/
+
 .reify-cache/
+
+#testing
+coverage.lcov
