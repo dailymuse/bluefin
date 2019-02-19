@@ -6,7 +6,7 @@ import vfs from './fixtures/simple.js'
 
 const name = 'basketball'
 
-describe('schema', () => {
+describe.only('schema', () => {
   let c
   let db
   let hoops
@@ -15,6 +15,8 @@ describe('schema', () => {
     return Configuration.read('/test/conf.json', vfs)
       .then(conf => {
         db = conf.database('bft')
+        console.log('db')
+        console.log(db)
         hoops = db.schema.hoops
         return db.ensure()
       })
