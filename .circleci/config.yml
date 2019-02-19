@@ -81,8 +81,8 @@ jobs:
       - run:
           name: Execute Tests & coverage
           command: |
-            docker run --rm bluefin yarn run test
-            docker run -e "CODECOV_TOKEN=$CODECOV_TOKEN" --rm bluefin yarn run coverage
+            docker-compose run --rm bluefin yarn run test
+            docker-compose run -e "CODECOV_TOKEN=$CODECOV_TOKEN" --rm bluefin yarn run coverage
   publish:
     <<: *defaults
     steps:
