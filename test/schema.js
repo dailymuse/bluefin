@@ -6,7 +6,7 @@ import vfs from './fixtures/simple.js'
 
 const name = 'basketball'
 
-describe.only('schema', () => {
+describe('schema', () => {
   let c
   let db
   let hoops
@@ -15,12 +15,10 @@ describe.only('schema', () => {
     return Configuration.read('/test/conf.json', vfs)
       .then(conf => {
         db = conf.database('bft')
-        console.log('db')
-        console.log(db)
         hoops = db.schema.hoops
         return db.ensure()
       })
-      .then(() => Client.connect({ database: db.name }))
+      .then(() => Client.connect({ host: 'pg', port: 5432, user: 'postgres', password: 'postgres' }))
       .then(client => { c = client })
   })
 
