@@ -1,6 +1,6 @@
 FROM node:10-alpine
 
-WORKDIR /conflator
+WORKDIR /bluefin
 
 COPY . .
 

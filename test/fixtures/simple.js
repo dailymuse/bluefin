@@ -1,8 +1,13 @@
-import memfs from 'memfs'
+const memfs = require('memfs')
 
 const conf = {
   clusters: {
     local: {
+      dsn: {
+        host: 'pg',
+        port: 5432,
+        user: 'postgres'
+      },
       grants: {
         app1: 'grants/utc.sql'
       }
@@ -16,6 +21,11 @@ const conf = {
         hoops: {
           name: 'basketball',
           migrations: 'migrations/season',
+          dsn: {
+            host: 'pg',
+            port: 5432,
+            user: 'postgres'
+          },
           grants: {
             app1: 'grants/reader.sql',
             app2: ['grants/reader.sql', 'grants/writer.sql']
@@ -35,6 +45,7 @@ const passwords = {
   app1: 'def',
   app2: 'ghi',
   app3: 'jkl',
+  postgres: 'postgres',
   tests: 'mno'
 }
 
@@ -96,4 +107,4 @@ vfs.mkdirSync('/test/migrations')
 vfs.mkdirSync('/test/migrations/season')
 vfs.mkdirSync('/test/grants')
 
-export default vfs
+module.exports = vfs

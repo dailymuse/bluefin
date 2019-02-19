@@ -5,7 +5,7 @@ describe('program', () => {
   let client
 
   before(() => {
-    return Client.connect().then(_client => { client = _client })
+    return Client.connect({ host: 'pg', port: 5432, user: 'postgres', password: 'postgres' }).then(_client => { client = _client })
   })
 
   after(() => {
