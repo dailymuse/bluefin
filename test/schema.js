@@ -4,7 +4,7 @@ import Configuration from '../lib/configuration'
 import Schema from '../lib/schema'
 import vfs from './fixtures/simple.js'
 
-const name = 'test'
+const name = 'basketball'
 
 describe('schema', () => {
   let c
