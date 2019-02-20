@@ -7,7 +7,6 @@ import vfs from './fixtures/simple.js'
 const name = 'basketball'
 
 describe('schema', function () {
-  this.retries(5)
   let c
   let db
   let hoops
