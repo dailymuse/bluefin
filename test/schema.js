@@ -23,6 +23,7 @@ describe('schema', () => {
   })
 
   beforeEach(() => {
+
     Client.clear()
   })
 
@@ -42,18 +43,17 @@ describe('schema', () => {
       return hoops.drop(c)
     })
 
-    // can't test this in the docker environment we've created
-    it.skip('exists is false', function () {
+    it('exists is false', function () {
       return hoops.exists(c).must.eventually.be.false()
     })
-    // can't test this in the docker environment we've created
-    it.skip('create creates', function () {
+
+    it('create creates', function () {
       return hoops.create(c)
         .then(() => hoops.exists(c))
         .must.eventually.be.true()
     })
-    // can't test this in the docker environment we've created
-    it.skip('drop succeeds', function () {
+
+    it('drop succeeds', function () {
       return hoops.drop(c)
         .then(() => hoops.exists(c))
         .must.eventually.be.false()
@@ -114,8 +114,8 @@ describe('schema', () => {
     it('create fails', function () {
       return hoops.create(c).must.reject.an(Error)
     })
-    // can't test this in the docker environment we've created
-    it.skip('drop succeeds', function () {
+
+    it('drop succeeds', function () {
       return hoops.drop(c)
         .then(() => hoops.exists(c))
         .must.eventually.be.false()
@@ -136,8 +136,8 @@ describe('schema', () => {
     beforeEach(() => {
       return db.rebuild({ last: 1 })
     })
-    // can't test this in the docker environment we've created
-    it.skip('applies new migrations', function () {
+
+    it('applies new migrations', function () {
       return hoops.apply(c)
         .then(() => hoops.getTableNames(c))
         .then(names => {

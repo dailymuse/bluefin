@@ -24,3 +24,5 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=test
+    volumes:
+      - ~/Documents/docker_storage/bluefin/data:/var/lib/postgresql/data
