@@ -13,7 +13,8 @@ services:
       - DATABASE_URL=postgres://postgres:postgres@pg:5432/test
     depends_on:
       - pg
-    command: ["./wait-for-postgres.sh", "pg"]
+    entrypoint: ["./wait-for-postgres.sh", "pg"]
+    command: ["--host 172.21.0.2", "--port", "5432"]
 
   pg:
     image: postgres:11-alpine
