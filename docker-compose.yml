@@ -3,8 +3,6 @@ services:
   bluefin:
     build: .
     image: bluefin
-    volumes:
-      - ./:/bluefin
     environment:
       - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
       - AWS_DEFAULT_OUTPUT=$AWS_DEFAULT_OUTPUT
