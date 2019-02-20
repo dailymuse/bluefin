@@ -6,7 +6,8 @@ import vfs from './fixtures/simple.js'
 
 const name = 'basketball'
 
-describe('schema', () => {
+describe('schema', function () {
+  this.retries(5)
   let c
   let db
   let hoops
@@ -19,11 +20,13 @@ describe('schema', () => {
         return db.ensure()
       })
       .then(() => Client.connect({ host: 'pg', port: 5432, user: 'postgres', password: 'postgres' }))
-      .then(client => { c = client })
+      .then(client => { c = client }).then(() => {
+        const bluefin = Schema.bluefin()
+        return bluefin.build(c)
+      })
   })
 
   beforeEach(() => {
-
     Client.clear()
   })
 
