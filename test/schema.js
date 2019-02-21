@@ -21,6 +21,7 @@ describe('schema', function () {
       .then(() => Client.connect({ host: 'pg', port: 5432, user: 'postgres', password: 'postgres' }))
       .then(client => { c = client }).then(() => {
         const bluefin = Schema.bluefin()
+        bluefin.drop(c)
         return bluefin.build(c)
       })
   })
