@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -e
+
+export PATH="node_modules/.bin:$PATH"
+export ALLOW_CONFIG_MUTATIONS=true
+export NODE_ENV=test
+export TZ=UTC
+
+# Run tests
+nyc mocha -R list -r must -r reify --exit && nyc report --reporter=text-lcov > coverage.lcov
+./node_modules/.bin/codecov -t $CODECOV_TOKEN
