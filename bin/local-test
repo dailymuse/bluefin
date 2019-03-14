@@ -7,8 +7,8 @@ export ALLOW_CONFIG_MUTATIONS=true
 export NODE_ENV=test
 export TZ=UTC
 
-# Run tests
-mocha -R list -r must -r reify --exit &&
+# Run Linter
+yarn run lint:ts
 
-# Run Standard
-standard
+# Run tests
+mocha -R list -r must -r reify --exit
