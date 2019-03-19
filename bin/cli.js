@@ -27,7 +27,10 @@ function rebuild(dbName, schemaName, cmd) {
         : db.rebuild(options);
       return vow.finally(() => db.disconnect());
     })
-    .catch(err => console.log(err.messsage || err.stack.split("\n")[0]));
+    .catch(err => {
+      console.error(err.messsage || err.stack.split("\n")[0]);
+      process.exit(1);
+    });
 }
 
 function apply(dbName, schemaName, cmd) {
@@ -40,11 +43,29 @@ function apply(dbName, schemaName, cmd) {
         : db.apply(options);
       return vow.finally(() => db.disconnect());
     })
-    .catch(err => console.log(err.messsage));
+    .catch(err => {
+      console.error(err.messsage);
+      process.exit(1);
+    });
+}
+
+function getLatestOrdinal(dbName, schemaName, cmd) {
+  readOptions(cmd);
+  readConf(cmd.parent.conf)
+    .then(conf => {
+      console.log(conf);
+      return conf.database(dbName);
+    })
+    .then(db => db.getLatestOrdinal(schemaName).finally(() => db.disconnect()))
+    .then(ordinal => console.log(ordinal))
+    .catch(err => {
+      console.error(err.messsage || err);
+      process.exit(1);
+    });
 }
 
 program
-  .version("0.0.1")
+  .version("0.3.0")
   .option("-c --conf <path>", "Path to configuration file")
   .option(
     "-m --migration <ordinal>",
@@ -62,5 +83,10 @@ program
   .command("apply <db> [schema]")
   .description("Apply new migrations to a schema or all schemata in a database")
   .action(apply);
+
+program
+  .command("latest <db> <schema>")
+  .description("Get the latest ordinal to a schema in a database")
+  .action(getLatestOrdinal);
 
 program.parse(process.argv);

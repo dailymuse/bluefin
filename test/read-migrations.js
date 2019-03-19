@@ -6,23 +6,29 @@ import Sequence from "../lib/sequence";
 import vfs from "./fixtures/migrations.js";
 
 describe("read-migrations", () => {
-  it("reads migrations", function() {
-    return Sequence.readMigrations(vfs, "/test/alpha").then(s =>
+  it("reads migrations", async function() {
+    await Sequence.readMigrations(vfs, "/test/alpha").then(s =>
       s.programs.forEach(p => p.must.be.a(Migration))
     );
+
+    const ordinal = await Sequence.getLatestMigration(vfs, "/test/alpha");
+    ordinal.must.equal(3);
   });
 
-  it("reads just a prologue", function() {
-    return Sequence.readMigrations(vfs, "/test/beta").then(s => {
+  it("reads just a prologue", async function() {
+    await Sequence.readMigrations(vfs, "/test/beta").then(s => {
       s.programs[0].must.be.a(Program);
       s.programs[0].must.not.be.a(Migration);
       path.basename(s.programs[0].path).must.equal("prologue.sql");
       s.programs.slice(1).forEach(ea => ea.must.be.a(Migration));
     });
+
+    const ordinal = await Sequence.getLatestMigration(vfs, "/test/beta");
+    ordinal.must.equal(3);
   });
 
-  it("reads both meta migrations", function() {
-    return Sequence.readMigrations(vfs, "/test/gamma").then(s => {
+  it("reads both meta migrations", async function() {
+    await Sequence.readMigrations(vfs, "/test/gamma").then(s => {
       const last = s.programs.length - 1;
       s.programs[0].must.be.a(Program);
       s.programs[0].must.not.be.a(Migration);
@@ -32,6 +38,9 @@ describe("read-migrations", () => {
       s.programs[last].must.not.be.a(Migration);
       path.basename(s.programs[last].path).must.equal("epilogue.sql");
     });
+
+    const ordinal = await Sequence.getLatestMigration(vfs, "/test/gamma");
+    ordinal.must.equal(3);
   });
 
   it("puts migrations in order", function() {
@@ -43,28 +52,36 @@ describe("read-migrations", () => {
     });
   });
 
-  it("reads just an epilogue", function() {
-    return Sequence.readMigrations(vfs, "/test/delta").then(s => {
+  it("reads just an epilogue", async function() {
+    await Sequence.readMigrations(vfs, "/test/delta").then(s => {
       const last = s.programs.length - 1;
       s.programs.slice(0, -1).forEach(ea => ea.must.be.a(Migration));
       s.programs[last].must.be.a(Program);
       s.programs[last].must.not.be.a(Migration);
       path.basename(s.programs[last].path).must.equal("epilogue.sql");
     });
+
+    const ordinal = await Sequence.getLatestMigration(vfs, "/test/delta");
+    ordinal.must.equal(3);
   });
 
-  it("ignores extraneous files", function() {
-    return Sequence.readMigrations(vfs, "/test/epsilon").then(s => {
+  it("ignores extraneous files", async function() {
+    await Sequence.readMigrations(vfs, "/test/epsilon").then(s => {
       s.programs.forEach(ea => ea.template.must.equal("OK"));
     });
+
+    const ordinal = await Sequence.getLatestMigration(vfs, "/test/epsilon");
+    ordinal.must.equal(3);
   });
 
-  it("rejects on duplicate migration ordinals", function() {
-    return Sequence.readMigrations(vfs, "/test/zeta").must.reject.an(Error);
+  it("rejects on duplicate migration ordinals", async function() {
+    await Sequence.readMigrations(vfs, "/test/zeta").must.reject.an(Error);
+    await Sequence.getLatestMigration(vfs, "/test/zeta").must.reject.an(Error);
   });
 
-  it("rejects on missing migration ordinals", function() {
-    return Sequence.readMigrations(vfs, "/test/zeta").must.reject.an(Error);
+  it("rejects on missing migration ordinals", async function() {
+    await Sequence.readMigrations(vfs, "/test/eta").must.reject.an(Error);
+    await Sequence.getLatestMigration(vfs, "/test/eta").must.reject.an(Error);
   });
 
   it("sets paths correctly", function() {
