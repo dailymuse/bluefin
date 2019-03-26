@@ -53,7 +53,6 @@ function getLatestOrdinal(dbName, schemaName, cmd) {
   readOptions(cmd);
   readConf(cmd.parent.conf)
     .then(conf => {
-      console.log(conf);
       return conf.database(dbName);
     })
     .then(db => db.getLatestOrdinal(schemaName).finally(() => db.disconnect()))
