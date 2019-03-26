@@ -1,67 +1,67 @@
-const memfs = require('memfs')
+const memfs = require("memfs");
 
 const conf = {
   clusters: {
     local: {
       dsn: {
-        host: 'pg',
+        host: "pg",
         port: 5432,
-        user: 'postgres'
+        user: "postgres"
       },
       grants: {
-        app1: 'grants/utc.sql'
+        app1: "grants/utc.sql"
       }
     }
   },
   databases: {
     bft: {
-      name: 'bluefin_test',
-      cluster: 'local',
+      name: "bluefin_test",
+      cluster: "local",
       schema: {
         hoops: {
-          name: 'basketball',
-          migrations: 'migrations/season',
+          name: "basketball",
+          migrations: "migrations/season",
           dsn: {
-            host: 'pg',
+            host: "pg",
             port: 5432,
-            user: 'postgres'
+            user: "postgres"
           },
           grants: {
-            app1: 'grants/reader.sql',
-            app2: ['grants/reader.sql', 'grants/writer.sql']
+            app1: "grants/reader.sql",
+            app2: ["grants/reader.sql", "grants/writer.sql"]
           }
         }
       },
       grants: {
-        app1: 'usage.sql'
+        app1: "usage.sql"
       }
     }
   },
-  passwords: 'secret/conf.json'
-}
+  passwords: "secret/conf.json"
+};
 
 const passwords = {
-  root: 'abc',
-  app1: 'def',
-  app2: 'ghi',
-  app3: 'jkl',
-  postgres: 'postgres',
-  tests: 'mno'
-}
+  root: "abc",
+  app1: "def",
+  app2: "ghi",
+  app3: "jkl",
+  postgres: "postgres",
+  tests: "mno"
+};
 
 const tree = {
-  'conf.json': JSON.stringify(conf),
+  "conf.json": JSON.stringify(conf),
 
-  'secret/conf.json': JSON.stringify(passwords),
+  "secret/conf.json": JSON.stringify(passwords),
 
-  'migrations/season/001-create-team.sql': template`
+  "migrations/season/001-create-team.sql": template`
     CREATE TABLE $schema.team (
       id serial PRIMARY KEY,
       name text NOT NULL,
       city text NOT NULL
     )`,
 
-  'migrations/season/002-create-game.sql': template`
+  "migrations/season/002-create-game.sql": template`
     CREATE TABLE $schema.game (
       id serial PRIMARY KEY,
       home_team integer NOT NULL REFERENCES $schema.team(id),
@@ -73,38 +73,38 @@ const tree = {
       CONSTRAINT positive_away_score CHECK (away_score >= 0)
     )`,
 
-  'grants/reader.sql': template`
+  "grants/reader.sql": template`
     ALTER ROLE $user SET search_path = $schema;
 
     GRANT USAGE ON SCHEMA $schema TO $user;
     GRANT USAGE ON ALL SEQUENCES IN SCHEMA $schema TO $user;
     GRANT SELECT ON ALL TABLES IN SCHEMA $schema TO $user`,
 
-  'grants/writer.sql': template`
+  "grants/writer.sql": template`
     ALTER ROLE $user SET search_path = $schema;
 
     GRANT USAGE ON SCHEMA $schema TO $user;
     GRANT USAGE ON ALL SEQUENCES IN SCHEMA $schema TO $user;
     GRANT INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA $schema TO $user`,
 
-  'grants/utc.sql': template`
+  "grants/utc.sql": template`
     ALTER ROLE $user SET timezone = 'UTC'`
-}
+};
 
-function template (strings, ...values) {
-  const trimmed = strings.map(s => s.replace(/^\s+/g, '').replace(/\s+/g, ' '))
-  let t = trimmed.slice(0, 1)
+function template(strings, ...values) {
+  const trimmed = strings.map(s => s.replace(/^\s+/g, "").replace(/\s+/g, " "));
+  let t = trimmed.slice(0, 1);
   for (let i = 1, l = trimmed.length; i < l; i++) {
-    t.push(trimmed[i])
-    t.push(values[i - 1])
+    t.push(trimmed[i]);
+    t.push(values[i - 1]);
   }
-  return t.join()
+  return t.join();
 }
 
-const vfs = new memfs.Volume()
-vfs.mountSync('/test', tree)
-vfs.mkdirSync('/test/migrations')
-vfs.mkdirSync('/test/migrations/season')
-vfs.mkdirSync('/test/grants')
+const vfs = new memfs.Volume();
+vfs.mountSync("/test", tree);
+vfs.mkdirSync("/test/migrations");
+vfs.mkdirSync("/test/migrations/season");
+vfs.mkdirSync("/test/grants");
 
-module.exports = vfs
+module.exports = vfs;
