@@ -6,8 +6,8 @@
   "bin": "./bin/cli.js",
   "scripts": {
     "coverage": "./bin/local-coverage",
-    "lint:ts": "tslint -c ./tslint.json '*.{tsx,ts,jsx,js}' '*/*.{tsx,ts,jsx,js}'",
-    "lint:ts:fix": "tslint -c ./tslint.json '*.{tsx,ts,jsx,js}' '*/*.{tsx,ts,jsx,js}' --fix",
+    "lint:ts": "tslint -c ./tslint.json '*.{tsx,ts,jsx,js}' 'bin/**/*.{tsx,ts,jsx,js}' 'lib/**/*.{tsx,ts,jsx,js}' 'test/**/*.{tsx,ts,jsx,js}'",
+    "lint:ts:fix": "tslint -c ./tslint.json '*.{tsx,ts,jsx,js}' 'bin/**/*.{tsx,ts,jsx,js}' 'lib/**/*.{tsx,ts,jsx,js}' 'test/**/*.{tsx,ts,jsx,js}' --fix",
     "test": "./bin/local-test"
   },
   "author": "Daily Muse, Inc.",
@@ -23,7 +23,7 @@
     "nyc": "~13.3.0"
   },
   "dependencies": {
-    "@themuse/muse-lint-tslint": "~0.3.0",
+    "@themuse/muse-lint-tslint": "~0.5.0",
     "bluebird": "~3.5.3",
     "commander": "~2.19.0",
     "husky": "~1.3.1",
