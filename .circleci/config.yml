@@ -95,7 +95,7 @@ jobs:
             command: |
               package_name=$(cat package.json | jq .name -r)
               package_version=$(cat package.json | jq .version -r)
-              dist_tag=$(docker run --rm "$TOOLS_IMAGE" generate-deployment-id $CIRCLE_BRANCH)
+              dist_tag=$(docker run --rm "themuse/tools:${TOOLS_VERSION:-2.5.8}" generate-deployment-id $CIRCLE_BRANCH)
 
               docker run \
                 --rm \
