@@ -22,7 +22,7 @@ if [[ $circle_branch == "master" ]]; then
     yarn publish --tag latest --new-version $package_version
 else
     # Publish to Verdaccio
-    yarn --no-git-tag-version version "$package_version-build-$circle_build_num"
+    yarn --no-git-tag-version --new-version "$package_version-build-$circle_build_num"
     yarn publish --tag $dist_tag
 
     # Overwrite .npmrc to point to Gemfury
