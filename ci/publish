@@ -10,7 +10,7 @@ circle_branch="$5"
 
 if [[ $circle_branch == "master" ]]; then
     # Publish to Verdaccio
-    npm publish --tag latest
+    yarn publish --tag latest --new-version $package_version
 
     # Overwrite .npmrc to point to Gemfury
     rm .npmrc
@@ -19,11 +19,11 @@ if [[ $circle_branch == "master" ]]; then
     echo $url >> .npmrc
 
     # Publish to Gemfury
-    npm publish --tag latest
+    yarn publish --tag latest --new-version $package_version
 else
     # Publish to Verdaccio
-    npm --no-git-tag-version version "$package_version-build-$circle_build_num"
-    npm publish --tag $dist_tag
+    yarn --no-git-tag-version version "$package_version-build-$circle_build_num"
+    yarn publish --tag $dist_tag
 
     # Overwrite .npmrc to point to Gemfury
     rm .npmrc
@@ -32,7 +32,7 @@ else
     echo $url >> .npmrc
 
     # Publish to Gemfury
-    npm publish --tag $dist_tag
+    yarn publish --tag $dist_tag
 
-    echo "To install via dist-tag: npm install --save $package_name@$dist_tag"
+    echo "To install via dist-tag: yarn install --save $package_name@$dist_tag"
 fi
