@@ -12,9 +12,6 @@
   },
   "author": "Daily Muse, Inc.",
   "license": "MIT",
-  "publishConfig": {
-    "registry": "https://verdaccio.inf.themuse.com"
-  },
   "devDependencies": {
     "codecov": "~3.2.0",
     "memfs": "~0.0.9",
