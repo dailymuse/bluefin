@@ -105,7 +105,7 @@ jobs:
                 -w /app/workspace \
                 -e NPM_AUTH_TOKEN \
                 -e GEMFURY_TOKEN \
-                circleci/node:9.11 \
+                circleci/node:10 \
                 ./ci/publish $package_name $package_version $dist_tag $CIRCLE_BUILD_NUM $CIRCLE_BRANCH
 
               echo "To install via dist-tag: npm install --save $PACKAGE_NAME@$DIST_TAG"
