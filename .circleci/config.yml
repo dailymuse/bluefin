@@ -97,7 +97,7 @@ jobs:
                 -v $(pwd):/app/workspace \
                 -w /app/workspace \
                 --env NPM_AUTH_TOKEN \
-                --env GEMFURY_PUSH_TOKEN \
+                --env GEMFURY_TOKEN=$GEMFURY_PUSH_TOKEN \
                 circleci/node:10 \
                 ./ci/publish $package_name $package_version $dist_tag $CIRCLE_BUILD_NUM $CIRCLE_BRANCH
 
