@@ -83,7 +83,6 @@ jobs:
       - checkout
       - run: *start_vpn
       - run: *wait_for_vpn
-      - run: *gen_npmrc
       - run:
             name: Publish
             command: |
