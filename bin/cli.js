@@ -44,7 +44,7 @@ function apply(dbName, schemaName, cmd) {
       return vow.finally(() => db.disconnect());
     })
     .catch(err => {
-      console.error(err.messsage);
+      console.error(err.messsage || err.stack.split("\n")[0]);
       process.exit(1);
     });
 }
