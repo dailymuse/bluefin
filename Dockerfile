@@ -9,7 +9,7 @@ COPY . .
 
 RUN apk add --no-cache bash==5.0.11-r1
 
-RUN apk add --no-cache git~=2.20
+RUN apk add --no-cache git=2.24.3-r0
 RUN apk add postgresql-dev gcc musl-dev postgresql-client
 
 RUN yarn install
