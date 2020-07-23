@@ -9,4 +9,3 @@ export TZ=UTC
 
 # Run tests
 nyc mocha -R list -r must -r reify --exit && nyc report --reporter=text-lcov > coverage.lcov
-./node_modules/.bin/codecov -t $CODECOV_TOKEN

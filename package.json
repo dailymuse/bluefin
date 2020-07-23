@@ -1,6 +1,6 @@
 {
   "name": "@themuse/bluefin",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "A postgres schema management tool",
   "main": "index.js",
   "bin": "./bin/cli.js",
@@ -13,7 +13,6 @@
   "author": "Daily Muse, Inc.",
   "license": "MIT",
   "devDependencies": {
-    "codecov": "~3.3.0",
     "memfs": "~2.15.2",
     "mocha": "~6.1.4",
     "must": "~0.13.4",
